@@ -1,0 +1,56 @@
+<?php
+class information{
+    private $name = "";
+    private $roll = "";
+    private $email = "";
+
+    protected function info(){
+        echo $this->name="Jim <br>";
+        echo $this->roll="01 <br>";
+        echo $this->email="Jim@gmail.com <br>";
+    }
+}
+
+class Result extends information{
+    private $grade ="";
+    private $point = "";
+    public function print(){
+   $this->info();
+   echo $this->grade ='A+ <br>';
+   echo $this->point ='5.00 <br>';
+    }
+}
+?>
+
+
+index.php:_________>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <?php
+    include 'classes.php';
+    $res =new Result;
+    $res->print();
+    ?>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
