@@ -65,25 +65,62 @@
                     <tbody>
                         <?php
                         $obj = $stdObj->show();
+
+                        if (isset($_GET['active'])){
+                             $active = $_GET['active'];
+                             $stdObj->active($active);
+
+                        }
+                        if (isset($_GET['inactive'])){
+                            $inactive = $_GET['inactive'];
+                            $stdObj->inactive($inactive);
+
+                       }
+                       if (isset($_GET['deleteId'])){
+                        $deleteId = $_GET['deleteId'];
+                        $stdObj->delete($deleteId);
+
+                            }
                            if($obj->num_rows > 0){
+                            $sqn = '1';
                             while($allData = $obj->fetch_assoc()){
                                 $myStatus = '';
                                 if($allData['status'] == 1){
-                                    $myStatus = '<span class="text-success badge">Active</span>';
+                                    $myStatus = '<a href="index.php?active='.$allData['id'].'" class="btn btn-success btn-sm">Active</a>';
                                 }
                                 else{
-                                    $myStatus = '<span class="text-warning badge">Inactive</span>';
+                                    $myStatus = ' <a href="index.php?inactive='.$allData['id'].'" class="btn btn-warning btn-sm">Inactive</a>';
                                 }
                                echo "<tr>
-                               <td>".$allData['id']."</td>
+                               <td>".$sqn."</td>
                                <td class='fw-bold'>".$allData['name']."</td>
                                <td>".$allData['email']."</td>
                                <td>".$allData['phone']."</td>
                                <td>".$myStatus."</td>
-                               <td>".'<button class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></button>
-                               <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>'."</td>
+                               <td>".'<a href="edit.php?editId='.$allData["id"].'" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
+                               <button data-bs-toggle="modal" data-bs-target="#delete'.$allData["id"].'" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>'."</td>
                                </tr>";
-                            }
+                                ?>
+                               <!-- Modal -->
+<div class="modal fade" id="delete<?php echo $allData['id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Please Confirm</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h3>Sure You Wanna delete Info of <?php echo $allData['name'] ?> ?</h3>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <a  href="index.php?deleteId=<?php echo $allData['id']?>" type="button" class="btn btn-primary">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+                                <?php
+                           $sqn++; }
                            }
                            else{
                             echo "<tr>
@@ -92,6 +129,9 @@
                            }
                         ?>
                     </tbody>
+                    
+                   
+                    
                 </table>
             </div>
         </div>
